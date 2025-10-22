@@ -3,60 +3,37 @@ package org.nvcud.ag;
 import net.bytebuddy.agent.ByteBuddyAgent;
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.asm.Advice;
+import net.bytebuddy.agent.builder.AgentBuilder.RedefinitionStrategy;
 import net.bytebuddy.matcher.ElementMatchers;
+
 import java.lang.instrument.Instrumentation;
-import java.util.Arrays;
 
 public class AoAg {
 
     static {
         try {
+            System.out.println("[AoAg] Installing agent...");
+
             Instrumentation inst = ByteBuddyAgent.install();
 
             new AgentBuilder.Default()
-                    .with(AgentBuilder.RedefinitionStrategy.RETRANSFORMATION)
+                    .with(RedefinitionStrategy.RETRANSFORMATION)
+                    .ignore(ElementMatchers.nameStartsWith("net.bytebuddy.")) // 避免死循环
                     .type(ElementMatchers.nameStartsWith("com.mowan.circle.service.processor"))
                     .transform((builder, typeDescription, classLoader, module) ->
-                            builder.method(ElementMatchers.any())
-                                    .intercept(Advice.to(MethodInterceptor.class)))
+                            builder.visit(Advice.to(MethodAdvice.class).on(ElementMatchers.any()))
+                    )
                     .installOn(inst);
 
-            for (Class<?> clazz : inst.getAllLoadedClasses()) {
-                if (clazz.getName().startsWith("com.mowan.circle.service.processor")) {
-                    try {
-                        inst.retransformClasses(clazz);
-                    } catch (Throwable t) {
-                    }
-                }
-            }
-
-            System.out.println("AoAg Agent installed successfully");
-        } catch (Exception var1) {
+            System.out.println("[AoAg] Agent installed successfully ✅");
+        } catch (Throwable e) {
+            System.err.println("[AoAg] Agent installation failed ❌");
+            e.printStackTrace();
         }
     }
 
-
-
-    // 拦截器
-    public static class MethodInterceptor {
-
-        @Advice.OnMethodEnter
-        public static void onEnter(@Advice.Origin String method,
-                                   @Advice.AllArguments Object[] args) {
-            System.out.println("Enter method: " + method);
-            System.out.println("Arguments: " + Arrays.toString(args));
-        }
-
-        @Advice.OnMethodExit(onThrowable = Throwable.class)
-        public static void onExit(@Advice.Origin String method,
-                                  @Advice.Return Object ret,
-                                  @Advice.Thrown Throwable throwable) {
-            if (throwable != null) {
-                System.out.println("Method " + method + " threw: " + throwable);
-            } else {
-                System.out.println("Exit method: " + method + ", Return: " + ret);
-            }
-        }
+    public AoAg() {
+        // 实例化时触发类加载（只执行一次）
+        System.out.println("[AoAg] Constructor invoked, agent already active.");
     }
 }
-
