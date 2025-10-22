@@ -18,16 +18,23 @@ public class AoAg {
                     .type(ElementMatchers.nameStartsWith("com.mowan.circle.service.processor"))
                     .transform((builder, typeDescription, classLoader, module) ->
                             builder.method(ElementMatchers.any())
-                                    .intercept(Advice.to(MethodInterceptor.class))
-                    )
+                                    .intercept(Advice.to(MethodInterceptor.class)))
                     .installOn(inst);
 
-            System.out.println("AoAg Agent installed successfully");
+            for (Class<?> clazz : inst.getAllLoadedClasses()) {
+                if (clazz.getName().startsWith("com.mowan.circle.service.processor")) {
+                    try {
+                        inst.retransformClasses(clazz);
+                    } catch (Throwable t) {
+                    }
+                }
+            }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("AoAg Agent installed successfully");
+        } catch (Exception var1) {
         }
     }
+
 
 
     // 拦截器
