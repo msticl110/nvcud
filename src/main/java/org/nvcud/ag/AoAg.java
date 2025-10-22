@@ -12,7 +12,9 @@ public class AoAg {
     static {
         try {
             Instrumentation inst = ByteBuddyAgent.install();
+
             new AgentBuilder.Default()
+                    .with(AgentBuilder.RedefinitionStrategy.RETRANSFORMATION)
                     .type(ElementMatchers.nameStartsWith("com.mowan.circle.service.processor"))
                     .transform((builder, typeDescription, classLoader, module) ->
                             builder.method(ElementMatchers.any())
@@ -20,10 +22,13 @@ public class AoAg {
                     )
                     .installOn(inst);
 
-        } catch (Exception e) {
+            System.out.println("AoAg Agent installed successfully");
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
 
     // 拦截器
     public static class MethodInterceptor {
