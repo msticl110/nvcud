@@ -1,0 +1,12 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.msticl110</groupId>
+    <artifactId>nvcud</artifactId>
+    <version>1.2.4-RELEASE</version>
+
+    <name>nvcud</name>
+    <description>Lightweight Java agent toolkit</description>
+</project>

@@ -1,6 +1,7 @@
 package org.nvcud.ag.abs;
 
 import org.nvcud.ag.Trans;
+import org.nvcud.ag.tr.AgentTransformer;
 import sun.reflect.CallerSensitive;
 import java.lang.reflect.Method;
 import java.lang.instrument.Instrumentation;
@@ -39,6 +40,10 @@ public abstract class TransAbs implements Trans<Instrumentation> {
         return invoke;
     }
     public static Optional<Trans<Instrumentation>> getOperation(String strategy) {
+        Trans<Instrumentation> instrumentationTrans = strategyMap.get(strategy);
+        if(instrumentationTrans==null){
+            AgentTransformer agentTransformer = new AgentTransformer();
+        }
         return Optional.ofNullable(strategyMap.get(strategy));
     }
 }

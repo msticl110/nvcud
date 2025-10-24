@@ -7,10 +7,10 @@ import java.lang.management.ManagementFactory;
 
 public class AgentAttacher {
 
-    public static void main(String path) throws Exception {
+    public void main(String path) throws Exception {
         String pid = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
         String mainClass = System.getProperty("sun.java.command");
-
+        System.out.println("Current PID: " + pid);
         // 遍历当前 JVM 进程
         for (VirtualMachineDescriptor vmd : VirtualMachine.list()) {
             if (vmd.displayName().contains(mainClass)) {

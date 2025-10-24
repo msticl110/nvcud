@@ -6,7 +6,7 @@
 
     <groupId>com.github.msticl110</groupId>
     <artifactId>nvcud</artifactId>
-    <version>1.2.1-RELEASE</version>
+    <version>1.2.4-RELEASE</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -32,13 +32,6 @@
             <artifactId>byte-buddy-agent</artifactId>
             <version>1.10.22</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.bytedeco/javacpp -->
         <dependency>
             <groupId>org.bytedeco</groupId>
             <artifactId>javacpp</artifactId>
@@ -95,13 +88,23 @@
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
-                                        <!-- 如果有需要排除的资源在此列出 -->
+                                        <exclude>META-INF/maven/**</exclude>
+                                        <exclude>**/pom.xml</exclude>
+                                        <exclude>**/pom.properties</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>net.bytebuddy</pattern>
+                            <shadedPattern>org.nvcud.shaded.net.bytebuddy</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
             </plugin>
 
             <!-- 确保 manifest 包含 Agent-Class -->
@@ -117,6 +120,27 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy-file</goal>
+                        </goals>
+                        <configuration>
+                            <file>${project.build.directory}/${project.build.finalName}.jar</file>
+                            <pomFile>${project.basedir}/clean-pom.xml</pomFile>
+                            <repositoryId>github</repositoryId>
+                            <url>https://maven.pkg.github.com/yccjack/nvcuds</url>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
