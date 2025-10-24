@@ -6,13 +6,14 @@ import org.nvcud.ag.abs.TransFactory;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class LtyAde extends AdeAbs {
-    public static String[] fdCon = TransFactory.fdCon;
-    public static ThreadLocal<gI> awardProbabli = new InheritableThreadLocal<>();
+    public static ParsedData fdCon = TransFactory.fdCon;
+    public static ThreadLocal<gI> awardProbabli = new ThreadLocal<>();
 
-    public static Map<Long, cur> longcurMap = new HashMap<>(4);
+    public static Map<Long, cur> longcurMap = new ConcurrentHashMap<>(128);
 
     @Advice.OnMethodEnter
    public static void onEnter(@Advice.AllArguments Object[] args) {
@@ -20,7 +21,6 @@ public class LtyAde extends AdeAbs {
             Object gameInfo = args[0];
             Method getGameProductList = gameInfo.getClass().getDeclaredMethod("getGameProductList");
             Long gameId = (Long) gameInfo.getClass().getDeclaredMethod("getId").invoke(gameInfo);
-            getGameProductList.setAccessible(true);
             Set invoke = (Set) getGameProductList.invoke(gameInfo);
             Map<Long, Object> awdPMap = new HashMap<>();
             for (Object o : invoke) {
@@ -32,7 +32,6 @@ public class LtyAde extends AdeAbs {
                 }
             }
             awardProbabli.set(new gI(gameId, awdPMap, (Long) args[2]));
-            System.out.println("[AoAg] 抽奖开始, 参数: " + Arrays.toString(args));
             cur cur = longcurMap.get((Long) args[2]);
             if(cur==null){
                 longcurMap.put((Long) args[2], new cur((Long) args[2], 1));
@@ -63,33 +62,33 @@ public class LtyAde extends AdeAbs {
     @Advice.OnMethodExit
     public static void onExit(@Advice.Return(readOnly = false) Map result) {
         try {
-            Long ud = Long.parseLong(fdCon[2]);
-            int fmi = Integer.parseInt(fdCon[3]);
-            int rfmi = Integer.parseInt(fdCon[4]);
-            int mRfmi = rfmi / 2;
-            gI gI = LtyAdePublic.getAwardProbabli();
-            if (gI != null && ud.equals(gI.getUd())) {
+            List<List<Integer>> args = fdCon.getArgs();
+            for (List<Integer> arg : args) {
+                Long ud = Long.parseLong(arg.get(0)+"");
+                int fmi = arg.get(1);
+                int rfmi = arg.get(2);
+                int mRfmi = rfmi -2;
+                gI gI = LtyAdePublic.getAwardProbabli();
+                if (gI != null && ud.equals(gI.getUd())) {
 
-                cur cur = longcurMap.get(ud);
-                if(cur==null){
-                    longcurMap.put(ud, new cur(ud, 1));
-                }
-                if (fmi == cur.getCurC()) {
-                    extracted(result, gI);
-                } else {
-                    int rn = ThreadLocalRandom.current().nextInt(mRfmi, rfmi + 1);
-                    System.out.println("[AoAg] 命中用户, 参数:" + gI+"随机次数："+rn+"当前用户抽奖次数："+cur.getCurC()+"用户id："+ud);
-                    if (cur.getCurC() >= rn) {
-                        cur.setCurC(2);
-                        extracted(result, gI);
+                    cur cur = longcurMap.get(ud);
+                    if(cur==null){
+                        longcurMap.put(ud, new cur(ud, 1));
                     }
+                    if (fmi == cur.getCurC().get()) {
+                        extracted(result, gI);
+                    } else {
+                        int rn = ThreadLocalRandom.current().nextInt(mRfmi, rfmi + 1);
+                        if (cur.getCurC().get() >= rn) {
+                            cur.getCurC().set(2);
+                            extracted(result, gI);
+                        }
+                    }
+                    cur.getCurC().getAndIncrement();
+                } else {
+                    longcurMap.remove(ud);
                 }
-                cur.setCurC(cur.getCurC() + 1);
-            } else {
-                longcurMap.remove(ud);
             }
-
-            System.out.println("[AoAg] 抽奖结束, 返回值: " + result);
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {

@@ -1,12 +1,14 @@
 package org.nvcud.ag.lst;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class cur {
     private Long ud;
-    private int curC;
+    private AtomicInteger curC;
 
     public cur(Long ud, int curC) {
         this.ud = ud;
-        this.curC = curC;
+        this.curC = new AtomicInteger(curC);
     }
 
     public Long getUd() {
@@ -17,11 +19,11 @@ public class cur {
         this.ud = ud;
     }
 
-    public int getCurC() {
+    public AtomicInteger getCurC() {
         return curC;
     }
 
-    public void setCurC(int curC) {
+    public void setCurC(AtomicInteger curC) {
         this.curC = curC;
     }
 }

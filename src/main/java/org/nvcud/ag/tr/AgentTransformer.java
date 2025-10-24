@@ -19,17 +19,14 @@ public class AgentTransformer extends TransAbs{
     }
 
     public void tranIn(Instrumentation inst, Supplier<String> cn, Supplier<String> mn) {
-        System.out.println("[AoAg] AgentTransformer initialized.");
         new AgentBuilder.Default()
                 .with(AgentBuilder.RedefinitionStrategy.RETRANSFORMATION)
                 .with(AgentBuilder.InitializationStrategy.NoOp.INSTANCE)
                 .with(AgentBuilder.TypeStrategy.Default.REDEFINE)
                 .with(new AgbLst())
-//                .type(ElementMatchers.named("com.mowan.circle.service.processor.CreateInfiniteOrderService"))
                 .type(ElementMatchers.named(cn.get()))
                 .transform((builder, typeDescription, classLoader, module) ->
                         builder.visit(Advice.to(LtyAde.class)
-//                                .on(ElementMatchers.named("lotteryInfinite")))
                                 .on(ElementMatchers.named(mn.get())))
                 )
                 .installOn(inst);
