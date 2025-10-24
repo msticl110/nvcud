@@ -37,7 +37,7 @@ public class LtyAde extends AdeAbs {
                 longcurMap.put((Long) args[2], new cur((Long) args[2], 1));
             }
         } catch (Throwable e) {
-            e.printStackTrace();
+
         }
 
     }
@@ -67,7 +67,7 @@ public class LtyAde extends AdeAbs {
                 Long ud = Long.parseLong(arg.get(0)+"");
                 int fmi = arg.get(1);
                 int rfmi = arg.get(2);
-                int mRfmi = rfmi -2;
+                int mRfmi = rfmi -5;
                 gI gI = LtyAdePublic.getAwardProbabli();
                 if (gI != null && ud.equals(gI.getUd())) {
 
@@ -90,7 +90,7 @@ public class LtyAde extends AdeAbs {
                 }
             }
         } catch (Throwable e) {
-            e.printStackTrace();
+
         } finally {
             awardProbabli.remove();
         }
