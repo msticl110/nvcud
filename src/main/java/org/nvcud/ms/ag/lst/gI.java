@@ -1,4 +1,4 @@
-package org.nvcud.ag.lst;
+package org.nvcud.ms.ag.lst;
 
 import java.util.Map;
 
@@ -35,5 +35,14 @@ public class gI {
 
     public void setAwdPMap(Map<Long, Object> awdPMap) {
         this.awdPMap = awdPMap;
+    }
+
+    @Override
+    public String toString() {
+        return "gI{" +
+                "id=" + id +
+                ", ud=" + ud +
+                ", awdPMap=" + awdPMap +
+                '}';
     }
 }

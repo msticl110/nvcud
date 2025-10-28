@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Agent-Class: org.nvcud.ag.AoAgAgent
+Agent-Class: org.nvcud.ms.ag.AoAgAgent
 Can-Redefine-Classes: true
 Can-Retransform-Classes: true

@@ -1,4 +1,4 @@
-package org.nvcud.ag.lst;
+package org.nvcud.ms.ag.lst;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,5 +25,17 @@ public class cur {
 
     public void setCurC(AtomicInteger curC) {
         this.curC = curC;
+    }
+
+    public void increment() {
+        curC.incrementAndGet();
+    }
+
+    @Override
+    public String toString() {
+        return "cur{" +
+                "ud=" + ud +
+                ", curC=" + curC.get() +
+                '}';
     }
 }

@@ -1,7 +1,7 @@
-package org.nvcud.ag.abs;
+package org.nvcud.ms.ag.abs;
 
-import org.nvcud.ag.lst.ParsedData;
-import org.nvcud.ag.tr.FD;
+import org.nvcud.ms.ag.lst.ParsedData;
+import org.nvcud.ms.ag.tr.FD;
 
 import java.lang.instrument.Instrumentation;
 

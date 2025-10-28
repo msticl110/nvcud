@@ -1,6 +1,6 @@
-package org.nvcud.ag.tr;
+package org.nvcud.ms.ag.tr;
 
-import org.nvcud.ag.lst.ParsedData;
+import org.nvcud.ms.ag.lst.ParsedData;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

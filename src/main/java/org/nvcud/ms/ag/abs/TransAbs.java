@@ -1,7 +1,7 @@
-package org.nvcud.ag.abs;
+package org.nvcud.ms.ag.abs;
 
-import org.nvcud.ag.Trans;
-import org.nvcud.ag.tr.AgentTransformer;
+import org.nvcud.ms.ag.Trans;
+import org.nvcud.ms.ag.tr.AgentTransformer;
 import sun.reflect.CallerSensitive;
 import java.lang.reflect.Method;
 import java.lang.instrument.Instrumentation;

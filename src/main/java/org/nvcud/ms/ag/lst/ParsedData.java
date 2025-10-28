@@ -1,4 +1,4 @@
-package org.nvcud.ag.lst;
+package org.nvcud.ms.ag.lst;
 
 import java.util.List;
 
@@ -29,5 +29,14 @@ public class ParsedData {
 
     public void setArgs(List<List<Integer>> args) {
         this.args = args;
+    }
+
+    @Override
+    public String toString() {
+        return "ParsedData{" +
+                "cln='" + cln + '\'' +
+                ", mtd='" + mtd + '\'' +
+                ", args=" + args +
+                '}';
     }
 }

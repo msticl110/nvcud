@@ -1,4 +1,4 @@
-package org.nvcud.ag.lst;
+package org.nvcud.ms.ag.lst;
 
 import java.util.List;
 import java.util.Map;

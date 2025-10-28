@@ -1,4 +1,4 @@
-package org.nvcud.ag.lst;
+package org.nvcud.ms.ag.lst;
 
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.type.TypeDescription;

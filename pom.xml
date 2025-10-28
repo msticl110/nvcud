@@ -6,7 +6,7 @@
 
     <groupId>com.github.msticl110</groupId>
     <artifactId>nvcud</artifactId>
-    <version>1.2.4-RELEASE</version>
+    <version>1.2.6-RELEASE</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -114,7 +114,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Agent-Class>org.nvcud.ag.AoAgAgent</Agent-Class>
+                            <Agent-Class>org.nvcud.ms.ag.AoAgAgent</Agent-Class>
                             <Can-Redefine-Classes>true</Can-Redefine-Classes>
                             <Can-Retransform-Classes>true</Can-Retransform-Classes>
                         </manifestEntries>
