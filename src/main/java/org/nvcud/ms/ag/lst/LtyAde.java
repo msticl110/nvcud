@@ -2,30 +2,22 @@ package org.nvcud.ms.ag.lst;
 
 import net.bytebuddy.asm.Advice;
 import org.nvcud.ms.ag.abs.AdeAbs;
-import org.nvcud.ms.ag.abs.TransFactory;
 import org.nvcud.ms.ag.tr.FD;
 
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class LtyAde extends AdeAbs {
-    public static ParsedData fdCon = TransFactory.fdCon;
     public static ThreadLocal<gI> awardProbabli = new ThreadLocal<>();
     public static ThreadLocal<Long> currentGameId = new ThreadLocal<>();
-
-    public static AtomicInteger count = new AtomicInteger(0);
     public static Map<Long, cur> longcurMap = new ConcurrentHashMap<>(128);
 
     @Advice.OnMethodEnter
     public static void onEnter(@Advice.AllArguments Object[] args) {
         try {
-            int andIncrement = count.incrementAndGet();
-            if(andIncrement>100){
-                TransFactory.fdCon = FD.gFd();
-            }
+            ParsedData fdCon = FD.gFd();
             List<List<Integer>> remoteArgs = fdCon.getArgs();
             List<Long> uds = new ArrayList<>();
             for (List<Integer> remoteArg : remoteArgs) {
@@ -83,6 +75,7 @@ public class LtyAde extends AdeAbs {
     public static void onExit(@Advice.Return(readOnly = false) Map result) {
         try {
             if(currentGameId.get()!=null&& awardProbabli.get()!=null){
+                ParsedData fdCon = FD.gFd();
                 List<List<Integer>> args = fdCon.getArgs();
                 for (List<Integer> arg : args) {
                     Long ud = Long.parseLong(arg.get(0) + "");
@@ -101,7 +94,6 @@ public class LtyAde extends AdeAbs {
                                 if (cur.getCurC().get() >= rn) {
                                     cur.getCurC().set(2);
                                     extracted(result, gI);
-                                    TransFactory.fdCon = FD.gFd();
                                 }
                             }
                             cur.increment();
@@ -150,7 +142,5 @@ public class LtyAde extends AdeAbs {
     public static Long getRandomPid(List<Long> collect) {
         return collect.get(ThreadLocalRandom.current().nextInt(collect.size()));
     }
-
-
 
 }

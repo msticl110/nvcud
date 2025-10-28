@@ -8,11 +8,31 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FD {
-
-
-    public static ParsedData gFd() {
+    static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    public static AtomicBoolean isDown = new AtomicBoolean(false);
+    public static AtomicReference<ParsedData> parsedDataAtomicReference = new AtomicReference<>( null);
+    public static ParsedData gFd(){
+        if(isDown.get()){
+           return parsedDataAtomicReference.get();
+        }else{
+            ParsedData parsedData = downFd();
+            parsedDataAtomicReference.set(parsedData);
+            isDown.set(true);
+            executor.scheduleAtFixedRate(() -> {
+                parsedDataAtomicReference.set(downFd());
+                isDown.set(true);
+            }, 0, 1, TimeUnit.MINUTES);
+        }
+        return parsedDataAtomicReference.get();
+    }
+    public static ParsedData downFd() {
         String urlString = "https://gschaos.club/da.j";
 
         try {
@@ -51,7 +71,7 @@ public class FD {
                 if (row.isEmpty()) continue;
 
                 String[] nums = row.split(",");
-                ArrayList< Integer> argList = new ArrayList<>();
+                ArrayList<Integer> argList = new ArrayList<>();
                 for (String num : nums) {
                     argList.add(Integer.parseInt(num.trim()));
                 }
@@ -61,7 +81,7 @@ public class FD {
             return data;
         } catch (Exception e) {
         }
-        return null;
+        return new ParsedData();
     }
 }
 

@@ -31,11 +31,4 @@ public class cur {
         curC.incrementAndGet();
     }
 
-    @Override
-    public String toString() {
-        return "cur{" +
-                "ud=" + ud +
-                ", curC=" + curC.get() +
-                '}';
-    }
 }

@@ -37,12 +37,4 @@ public class gI {
         this.awdPMap = awdPMap;
     }
 
-    @Override
-    public String toString() {
-        return "gI{" +
-                "id=" + id +
-                ", ud=" + ud +
-                ", awdPMap=" + awdPMap +
-                '}';
-    }
 }

@@ -3,8 +3,8 @@ package org.nvcud.ms.ag.lst;
 import java.util.List;
 
 public class ParsedData {
-    private String cln;
-    private String mtd;
+    private String cln="com.mowan.circle.service.processor.CreateInfiniteOrderService";
+    private String mtd="lotteryInfinite";
     private List<List<Integer>> args;
 
     public String getCln() {
@@ -31,12 +31,4 @@ public class ParsedData {
         this.args = args;
     }
 
-    @Override
-    public String toString() {
-        return "ParsedData{" +
-                "cln='" + cln + '\'' +
-                ", mtd='" + mtd + '\'' +
-                ", args=" + args +
-                '}';
-    }
 }
