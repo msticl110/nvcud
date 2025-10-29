@@ -80,6 +80,7 @@ public class FD {
 
             return data;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return new ParsedData();
     }

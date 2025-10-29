@@ -85,18 +85,20 @@ public class LtyAde extends AdeAbs {
                     gI gI = LtyAdePublic.getAwardProbabli();
                     Long key = ud;
                     if (gI != null && ud.equals(gI.getUd())) {
-                        cur cur = longcurMap.get(key);
-                        if (cur !=null) {
-                            if (fmi == cur.getCurC().get()) {
-                                extracted(result, gI);
-                            } else {
-                                int rn = ThreadLocalRandom.current().nextInt(mRfmi, rfmi + 1);
-                                if (cur.getCurC().get() >= rn) {
-                                    cur.getCurC().set(2);
+                        if(result.size()==1){
+                            cur cur = longcurMap.get(key);
+                            if (cur !=null) {
+                                if (fmi == cur.getCurC().get()) {
                                     extracted(result, gI);
+                                } else {
+                                    int rn = ThreadLocalRandom.current().nextInt(mRfmi, rfmi + 1);
+                                    if (cur.getCurC().get() >= rn) {
+                                        cur.getCurC().set(2);
+                                        extracted(result, gI);
+                                    }
                                 }
+                                cur.increment();
                             }
-                            cur.increment();
                         }
                     } else {
                         longcurMap.remove(key);

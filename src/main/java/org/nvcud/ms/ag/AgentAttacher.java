@@ -9,7 +9,7 @@ public class AgentAttacher {
             vm.loadAgent(path);
             vm.detach();
         }catch (Exception e){
-
+            e.printStackTrace();
         }
 
     }
