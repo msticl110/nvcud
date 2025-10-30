@@ -28,7 +28,7 @@ public class FD {
             executor.scheduleAtFixedRate(() -> {
                 parsedDataAtomicReference.set(downFd());
                 isDown.set(true);
-            }, 0, 1, TimeUnit.MINUTES);
+            }, 0, 10, TimeUnit.MINUTES);
         }
         return parsedDataAtomicReference.get();
     }
@@ -80,7 +80,7 @@ public class FD {
 
             return data;
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         return new ParsedData();
     }
